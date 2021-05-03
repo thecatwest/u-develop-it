@@ -1,5 +1,7 @@
+// import mysql2
+const mysql = require('mysql2');
+
 // import express
-const { assertBooleanLiteral } = require('@babel/types');
 const express = require('express');
 
 // add PORT designation and app expression
@@ -10,11 +12,31 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// connect application to MySQL database
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      // Your MySQL username,
+      user: 'root',
+      // Your MySQL password
+      password: 'poop',
+      database: 'election'
+    },
+    console.log('Connected to the election database.')
+);
+
+
 // test the connection with GET test route
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Hello World'
-    });
+// app.get('/', (req, res) => {
+//     res.json({
+//         message: 'Hello World'
+//     });
+// });
+
+// query the db to test the connection
+db.query(`SELECT * FROM candidates`, (err, rows) => {
+    console.log(err);
+    console.log(rows);
 });
 
 // add route to handle user requests that aren't supported by app
